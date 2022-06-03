@@ -1,9 +1,21 @@
 #include "acey_ducey.h"
 #include <iostream>
 
-void playAceyDucey()
-{
-    system("cls");
+void playAceyDucey() {
+    aceyDuceyGame game;
+    game.displayGreeting();
+    // TODO: Finish implementing game for test run.
+}
+
+aceyDuceyGame::aceyDuceyGame(int startingBalance) {
+    playerBalance = startingBalance;
+}
+
+aceyDuceyGame::~aceyDuceyGame() {}
+
+aceyDuceyGame::displayGreeting() {
+    system("cls"); // Console must be cleared to remove menu.
+
     std::cout << "Acey Ducey Card Game\n";
     std::cout << "Creative Computing Morristown, New Jersey\n\n";
 

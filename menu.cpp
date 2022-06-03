@@ -7,14 +7,18 @@ Menu::Menu() {}
 
 Menu::~Menu() {}
 
-void Menu::executeOption(int input)
-{
-    switch (input)
-    {
+/**
+ * @brief Executes the game that the user would like to play.
+ *
+ * @param input A number representing the game from the menu.
+ */
+void Menu::executeOption(int input) {
+    switch (input) {
     case 1:
         playAceyDucey();
         break;
     default:
+        std::cout << "Not a valid input!\n";
         break;
     }
 }
@@ -36,29 +40,22 @@ bool Menu::isRunning() { return programRunning; }
  * @return true Either a valid option or the quit command (q)
  * @return false Can't be used in for the menu.
  */
-bool Menu::validInput(std::string x)
-{
+bool Menu::validInput(std::string x) {
     // 'q' is the only non-numeric valid input
-    if (x == "q" || x == "Q")
-    {
+    if (x == "q" || x == "Q") {
         return true;
     }
     // If not 'q', input has to be numeric
-    for (int i = 0; i < x.length(); i++)
-    {
-        if (!isdigit(x[i]))
-        {
+    for (int i = 0; i < x.length(); i++) {
+        if (!isdigit(x[i])) {
             return false;
         }
     }
     // Number is too big to store
-    try
-    {
+    try {
         int y;
         y = stoi(x);
-    }
-    catch (const std::out_of_range &e)
-    {
+    } catch (const std::out_of_range &e) {
         return false;
     }
 
@@ -75,8 +72,7 @@ void Menu::quitMenu() { programRunning = false; }
  * @brief Asks the user to enter an input for the menu options.
  *
  */
-void Menu::displayMenu()
-{
+void Menu::displayMenu() {
     // Feel free to add more games options, but add the game as a function
     std::cout
         << "Please enter the corresponding number to play the game or 'q' "
@@ -85,8 +81,7 @@ void Menu::displayMenu()
     std::cout << "'q' to quit\n";
 }
 
-void Menu::printGreeting()
-{
+void Menu::printGreeting() {
     std::cout << "Hello, welcome to Vintage Games!\n";
 }
 

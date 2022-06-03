@@ -3,31 +3,23 @@
 
 #include "menu.h"
 
-int main()
-{
+int main() {
     Menu vintageGameMenu;
     vintageGameMenu.printGreeting();
 
-    while (vintageGameMenu.isRunning())
-    {
+    while (vintageGameMenu.isRunning()) {
         vintageGameMenu.displayMenu();
         std::string userInput;
         std::cin >> userInput;
 
-        if (vintageGameMenu.validInput(userInput))
-        {
-            if (userInput == "q")
-            {
+        if (vintageGameMenu.validInput(userInput)) {
+            if (userInput == "q") {
                 vintageGameMenu.quitMenu();
-            }
-            else
-            {
+            } else {
                 int in = stoi(userInput);
                 vintageGameMenu.executeOption(in);
             }
-        }
-        else
-        {
+        } else {
             std::cout << "Input can't be processed. Try again!\n";
         }
     }
