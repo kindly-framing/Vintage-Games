@@ -1,88 +1,59 @@
 #include "menu.h"
-#include "acey_ducey.h"
-
 #include <iostream>
+#include <limits>
 
-Menu::Menu() {}
-
-Menu::~Menu() {}
-
-/**
- * @brief Executes the game that the user would like to play.
- *
- * @param input A number representing the game from the menu.
- */
-void Menu::executeOption(int input) {
-    switch (input) {
-    case 1:
-        playAceyDucey();
-        break;
-    default:
-        std::cout << "Not a valid input!\n";
-        break;
-    }
+Menu::Menu(std::vector<Menu_Item> menu)
+{
+    main_menu = menu;
+    set_state(ON);
 }
 
-/**
- * @brief Checks if the program should still be running.
- *
- * @return true The program is running.
- * @return false The program has stopped.
- */
-bool Menu::isRunning() { return programRunning; }
+bool Menu::menu_engine()
+{
+    using namespace std;
 
-/**
- * @brief Checks the input from the user and ensures that is it either the quit
- * command or a valid option. Checks the out of range exception if the user
- * tries to enter a number that can't be stored in an int.
- *
- * @param x The input from the user
- * @return true Either a valid option or the quit command (q)
- * @return false Can't be used in for the menu.
- */
-bool Menu::validInput(std::string x) {
-    // 'q' is the only non-numeric valid input
-    if (x == "q" || x == "Q") {
-        return true;
+    // display the menu
+    for (Menu_Item x : main_menu) {
+        cout << x.number << ": " << x.text << endl;
     }
-    // If not 'q', input has to be numeric
-    for (int i = 0; i < x.length(); i++) {
-        if (!isdigit(x[i])) {
-            return false;
-        }
+
+    // receive and handle input
+    cout << "Enter your selection or zero to quit: ";
+    std::string input;
+    unsigned int selection;
+    std::getline(std::cin, input);
+    while (!valid(input, selection)) {
+        cout << "Incorrect entry. Try again: ";
+        std::getline(std::cin, input);
     }
-    // Number is too big to store
-    try {
-        int y;
-        y = stoi(x);
-    } catch (const std::out_of_range &e) {
+
+    // execute the processing function for the menu item
+    if (selection == TERMINATING_INT) {
         return false;
     }
-
+    for (Menu_Item x : main_menu) {
+        if (selection == x.number) {
+            (x.processing_function)();
+            break;
+        }
+    }
     return true;
 }
 
-/**
- * @brief Will turn the menu off.
- *
- */
-void Menu::quitMenu() { programRunning = false; }
+bool Menu::valid(const std::string input, unsigned int &destination)
+{
+    // stoul() already goes through each character in input and tries to convert
+    unsigned int a;
+    try {
+        a = std::stoul(input);
+    }
+    catch (const std::invalid_argument &e) {
+        return false;
+    }
 
-/**
- * @brief Asks the user to enter an input for the menu options.
- *
- */
-void Menu::displayMenu() {
-    // Feel free to add more games options, but add the game as a function
-    std::cout
-        << "Please enter the corresponding number to play the game or 'q' "
-           "to quit.\n";
-    std::cout << "1. Acey Ducey\n";
-    std::cout << "'q' to quit\n";
+    if (a <= main_menu.size()) {
+        destination = a;
+        return true;
+    }
+    return false;
 }
-
-void Menu::printGreeting() {
-    std::cout << "Hello, welcome to Vintage Games!\n";
-}
-
-void Menu::printFarewell() { std::cout << "Thank you for playing!\n"; }
