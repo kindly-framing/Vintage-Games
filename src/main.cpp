@@ -1,45 +1,42 @@
-// #include "basic_games.h" // Library for the BASIC games
-#include "../headers/main.h"             // Game menu and play functions
-#include "../headers/input_validation.h" // Validators for input
-#include "../headers/menu.h"             // Header file for Menu class
+#include <input_validator.h>
+#include <menu.h>
+
+void holder();
+
+std::vector<Menu_Option> games = {{1, "Acey Ducey", holder},
+                                  {2, "Another game", holder}};
 
 int main()
 {
-    Menu game(games);
-    std::cout << "Welcome to Vintage BASIC Games!\n";
-    game.display_menu();
-    std::cout << "Enter game to play or q to quit: ";
+    const std::string option_request =
+        "Please select an option from the menu or q to quit: ";
+    const std::string invalid_entry = "Not a valid entry! Try again: ";
 
+    Menu main_menu(games);
+    std::cout << main_menu << option_request;
     std::string input;
-    unsigned int selection;
-    while (game.is_open()) {
+    int option;
+    while (main_menu.is_open())
+    {
         std::getline(std::cin, input);
-        if (input == "q" || input == "Q") {
-            break;
+        Input_Validator user(input);
+        if (user.is_quit("q"))
+        {
+            main_menu.close();
         }
-
-        if (input_validation::is_num(input)) {
-            selection = std::stoul(input);
-            try {
-                game.process_menu_option(selection);
-                system("cls");
-                std::cout << "Welcome to Vintage BASIC Games!\n";
-                game.display_menu();
-                std::cout << "Enter game to play or q to quit: ";
-            }
-            catch (const std::invalid_argument &e) {
-                std::cout << "Not a valid entry! Try again: ";
-            }
+        else if (user.is_num(option) && main_menu.option_exists(option))
+        {
+            main_menu.process(option);
+            std::cin.sync();
+            std::cout << main_menu << option_request;
         }
-        else {
-            std::cout << "Not valid entry! Try again: ";
+        else
+        {
+            std::cout << invalid_entry;
         }
-
-        std::cin.sync();
     }
-    std::cout << "Bye!\n";
 
     return 0;
 }
 
-void play_acey_ducey() { std::cout << "execute option 1\n"; }
+void holder() { std::cout << "Running option...\n"; }

@@ -1,48 +1,44 @@
-#include "../headers/menu.h"
+#include <menu.h>
 
-Menu::Menu(const std::vector<Menu_Option> &menu)
+Menu::Menu(std::vector<Menu_Option> menu_)
 {
-    if (menu.empty()) {
-        throw std::invalid_argument(
-            "Context: Creating a new Menu object.\n"
-            "Problem: The menu parameter given is empty.\n"
-            "Solution: Provide a menu with at least one option.\n");
+    if (menu_.empty())
+    {
+        throw std::invalid_argument("Menu is empty!");
     }
-
-    options = menu;
+    menu = menu_;
     state = OPEN;
 }
 
-void Menu::display_menu()
+void Menu::process(int option)
 {
-    invariant();
-    for (Menu_Option x : options) {
-        std::cout << x.number << ": " << x.text << std::endl;
-    }
-}
-
-void Menu::process_menu_option(const unsigned int selection)
-{
-    invariant();
-
-    bool found = false;
-    for (Menu_Option x : options) {
-        if (selection == x.number) {
-            found = !found;
-            (x.processing_function)();
-            break;
+    bool found_option = false;
+    for (Menu_Option a : menu)
+    {
+        if (a.number == option)
+        {
+            found_option = !found_option;
+            a.function();
         }
     }
-    if (!found) {
-        throw std::invalid_argument(
-            "Context: Processing option in the menu.\n"
-            "Problem: Option selected doesn't exist in the menu.\n"
-            "Solution: Ensure the option exists in the menu.\n");
+    if (!found_option)
+    {
+        throw std::invalid_argument("Option doesn't exist!");
     }
 }
 
 void Menu::close() { state = CLOSED; }
 
-void Menu::invariant() { assert(state == OPEN); }
+bool Menu::is_open() { return state == OPEN; }
 
-bool Menu::is_open() { return state; }
+bool Menu::option_exists(int option)
+{
+    for (Menu_Option a : menu)
+    {
+        if (a.number == option)
+        {
+            return true;
+        }
+    }
+    return false;
+}
