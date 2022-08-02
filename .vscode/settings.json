@@ -53,5 +53,6 @@
     "xloctime": "cpp"
   },
   "C_Cpp.errorSquiggles": "Enabled",
-  "docwriter.style": "Auto-detect"
+  "docwriter.style": "Auto-detect",
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, IndentWidth: 4, BreakBeforeBraces: Allman }"
 }

@@ -1,9 +1,8 @@
-#include <input_validator.h>
-#include <menu.h>
+#include "PLAY_game.h"
+#include "input_validator.h"
+#include "menu.h"
 
-void holder();
-
-std::vector<Menu_Option> games = {{1, "Acey Ducey", holder},
+std::vector<Menu_Option> games = {{1, "Acey Ducey", play_acey_ducey},
                                   {2, "Another game", holder}};
 
 int main()
@@ -26,8 +25,10 @@ int main()
         }
         else if (user.is_num(option) && main_menu.option_exists(option))
         {
+            system("cls");
             main_menu.process(option);
             std::cin.sync();
+            system("cls");
             std::cout << main_menu << option_request;
         }
         else
@@ -36,6 +37,7 @@ int main()
         }
     }
 
+    std::cout << "Bye!\n";
     return 0;
 }
 

@@ -1,6 +1,19 @@
-#include <input_validator.h>
+#include "input_validator.h"
 
 Input_Validator::Input_Validator(const std::string &s) { input = s; }
+
+int Input_Validator::input_number(const std::string error_msg)
+{
+    // keep asking for input until a number is entered
+    int num;
+    std::getline(std::cin, input);
+    while (!is_pos_num(num))
+    {
+        std::cout << error_msg;
+        std::getline(std::cin, input);
+    }
+    return num;
+}
 
 bool Input_Validator::is_num(int &n)
 {

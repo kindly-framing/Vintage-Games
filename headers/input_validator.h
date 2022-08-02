@@ -13,12 +13,17 @@
 #ifndef INPUT_VALIDATOR_H
 #define INPUT_VALIDATOR_H
 
+#include <iostream>
 #include <string>
 
 class Input_Validator
 {
   public:
-    Input_Validator(const std::string &s);
+    Input_Validator(const std::string &s = "");
+
+    int input_number(const std::string error_msg = "");
+
+    void set_input(const std::string &s) { input = s; }
 
     // checks if input is a number and attempts to save input into destination
     bool is_num(int &n);

@@ -1,4 +1,4 @@
-#include <BASIC_acey_ducey.h>
+#include "BASIC_acey_ducey.h"
 
 Acey_Ducey::Acey_Ducey()
 {
@@ -13,7 +13,6 @@ void Acey_Ducey::deal_initial_cards()
     Dealer x;
     for (int i = 0; i < 3; i++)
     {
-        // TODO: Implement Aces rules
         dealt_cards[i] = x.deal_card();
     }
 
@@ -22,6 +21,7 @@ void Acey_Ducey::deal_initial_cards()
     {
         std::swap(dealt_cards[0], dealt_cards[1]);
     }
+    std::cout << "HERE ARE YOUR NEXT TWO CARDS\n";
     std::cout << convert_to_rank(dealt_cards[0]) << "\n"
               << convert_to_rank(dealt_cards[1]) << "\n";
 }
@@ -31,21 +31,21 @@ bool Acey_Ducey::play_round(Player &a, const int &bet)
     // pre-conditions
     game_invariant();
     player_invariant(a);
-
-    // can't play a round if the bet is greater than the player's balance
-    if (bet > a.balance)
+    if (bet > a.balance || bet == 0)
     {
         return false;
     }
 
-    // TODO: Implement overall rules
     // play a round of Acey Ducey
+    std::cout << "Final card: " << convert_to_rank(dealt_cards[2]) << "\n";
     if (dealt_cards[2] > dealt_cards[0] && dealt_cards[2] < dealt_cards[1])
     {
+        a.round_result = Player::WON;
         a.balance += bet;
     }
     else
     {
+        a.round_result = Player::LOST;
         a.balance -= bet;
     }
     return true;
